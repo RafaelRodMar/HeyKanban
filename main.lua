@@ -1,8 +1,8 @@
 function love.load()
     --variables
-    gameWidth = 640
-    gameHeight = 480
-    love.window.setMode(gameWidth, gameHeight, {resizable=false, vsync=false})
+    appWidth = 640
+    appHeight = 480
+    love.window.setMode(appWidth, appHeight, {resizable=true, vsync=false})
     love.graphics.setBackgroundColor(1,1,1) --white
 
     --load font
@@ -44,6 +44,10 @@ end
 
 function love.draw()
     love.graphics.setBackgroundColor(1,1,1)
+
+    love.graphics.setColor(0,0,0)
+    local width, height = love.graphics.getDimensions( )
+    love.graphics.rectangle( "fill", 0, 0, 100, height)
     love.graphics.setColor(1,1,1)
 
     -- Draw Debug Info
