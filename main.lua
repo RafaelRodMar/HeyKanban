@@ -1,9 +1,10 @@
 function love.load()
     --variables
-    appWidth = 640
-    appHeight = 480
-    love.window.setMode(appWidth, appHeight, {resizable=true, vsync=false})
-    love.graphics.setBackgroundColor(1,1,1) --white
+    appWidth = 800
+    appHeight = 600
+    love.window.setMode(appWidth, appHeight, {resizable=false, vsync=false})
+
+    entities = {}
 
     --load font
     font = love.graphics.newFont("sansation.ttf",25)
@@ -14,6 +15,14 @@ function love.load()
 	-- sprIsom = love.graphics.newImage(imagedata)
     -- textureWidth = imagedata:getWidth()
     -- textureHeight = imagedata:getHeight()
+
+    --create the player
+    -- local player = objectplayer:new("player", player, 20,  gameHeight / 2, 16, 16,
+    -- 0, 0, 2, 0, 20)
+    -- table.insert(entities, player)
+
+    -- remove objects
+    --table.remove(entities,i)
 
     -- mouse
     mouseClicked = false
@@ -38,17 +47,22 @@ function love.mousepressed(x,y,button, istouch)
 end
 
 function love.update(dt)
+
+    --update the entities
+    -- for i,v in ipairs(entities) do
+    --     v:update(dt)
+    -- end
     
     mouseClicked = false
 end
 
 function love.draw()
-    love.graphics.setBackgroundColor(1,1,1)
+    love.graphics.setBackgroundColor(0,0,0)
 
-    love.graphics.setColor(0,0,0)
-    local width, height = love.graphics.getDimensions( )
-    love.graphics.rectangle( "fill", 0, 0, 100, height)
-    love.graphics.setColor(1,1,1)
+    -- draw the objects
+    -- for i,v in ipairs(entities) do
+    --     v:draw()
+    -- end
 
     -- Draw Debug Info
     --draw UI
