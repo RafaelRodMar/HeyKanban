@@ -1,3 +1,5 @@
+local Slab = require 'libraries/Slab'
+    
 function love.load()
     --variables
     appWidth = 800
@@ -27,6 +29,8 @@ function love.load()
     -- mouse
     mouseClicked = false
     vMouse = {x=0, y=0}
+
+    Slab.Initialize(args)
 end
 
 function love.keypressed(key)
@@ -47,11 +51,24 @@ function love.mousepressed(x,y,button, istouch)
 end
 
 function love.update(dt)
+    Slab.Update(dt)
+
+    Slab.BeginWindow('button1Window', {AutoSizeWindow = false, X = 20, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.Button("To Do", {W = 215, H = 45 })
+    Slab.EndWindow()
+
+    Slab.BeginWindow('button2Window', {AutoSizeWindow = false, X = 260, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.Button("Doing", {W = 215, H = 45 })
+    Slab.EndWindow()
+
+    Slab.BeginWindow('button3Window', {AutoSizeWindow = false, X = 500, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.Button("Done", {W = 215, H = 45 })
+    Slab.EndWindow()
 
     --update the entities
-    -- for i,v in ipairs(entities) do
-    --     v:update(dt)
-    -- end
+    for i,v in ipairs(entities) do
+        v:update(dt)
+    end
     
     mouseClicked = false
 end
@@ -60,11 +77,11 @@ function love.draw()
     love.graphics.setBackgroundColor(0,0,0)
 
     -- draw the objects
-    -- for i,v in ipairs(entities) do
-    --     v:draw()
-    -- end
+    for i,v in ipairs(entities) do
+        v:draw()
+    end
 
     -- Draw Debug Info
     --draw UI
-    love.graphics.setColor(1,0,0)
+    Slab.Draw()
 end
