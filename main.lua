@@ -53,16 +53,75 @@ end
 function love.update(dt)
     Slab.Update(dt)
 
-    Slab.BeginWindow('button1Window', {AutoSizeWindow = false, X = 20, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.BeginWindow('button1Window', {AutoSizeWindow = false, AllowResize = false, X = 20, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
     Slab.Button("To Do", {W = 215, H = 45 })
     Slab.EndWindow()
 
-    Slab.BeginWindow('button2Window', {AutoSizeWindow = false, X = 260, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.BeginWindow('button2Window', {AutoSizeWindow = false, AllowResize = false, X = 260, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
     Slab.Button("Doing", {W = 215, H = 45 })
     Slab.EndWindow()
 
-    Slab.BeginWindow('button3Window', {AutoSizeWindow = false, X = 500, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
+    Slab.BeginWindow('button3Window', {AutoSizeWindow = false, AllowResize = false, X = 500, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
     Slab.Button("Done", {W = 215, H = 45 })
+    Slab.EndWindow()
+
+    -- to do list
+    local Selected1 = nil
+
+    Slab.BeginWindow('ListBoxWindow1', {AutoSizeWindow = false, AllowResize = false, X = 20, Y = 80, W = 220, H = 500})
+
+    Slab.BeginListBox('ListBox1', {StretchW = true, StretchH = true})
+    for I = 1, 10, 1 do
+        Slab.BeginListBoxItem('ListBox1_Item_' .. I, {Selected1 = Selected1 == I})
+        Slab.Text("Item " .. I)
+
+        if Slab.IsListBoxItemClicked() then
+            Selected1 = I
+        end
+
+        Slab.EndListBoxItem()
+    end
+    Slab.EndListBox()
+
+    Slab.EndWindow()
+
+    -- doing list
+    local Selected2 = nil
+
+    Slab.BeginWindow('ListBoxWindow2', {AutoSizeWindow = false, AllowResize = false, X = 260, Y = 80, W = 220, H = 500})
+
+    Slab.BeginListBox('ListBox2', {StretchW = true, StretchH = true})
+    for I = 1, 10, 1 do
+        Slab.BeginListBoxItem('ListBox2_Item_' .. I, {Selected2 = Selected2 == I})
+        Slab.Text("Item " .. I)
+
+        if Slab.IsListBoxItemClicked() then
+            Selected2 = I
+        end
+
+        Slab.EndListBoxItem()
+    end
+    Slab.EndListBox()
+
+    Slab.EndWindow()
+
+    -- done list
+    local Selected3 = nil
+    Slab.BeginWindow('ListBoxWindow3', {AutoSizeWindow = false, AllowResize = false, X = 500, Y = 80, W = 220, H = 500})
+
+    Slab.BeginListBox('ListBox3', {StretchW = true, StretchH = true})
+    for I = 1, 10, 1 do
+        Slab.BeginListBoxItem('ListBox3_Item_' .. I, {Selected3 = Selected3 == I})
+        Slab.Text("Item " .. I)
+
+        if Slab.IsListBoxItemClicked() then
+            Selected3 = I
+        end
+
+        Slab.EndListBoxItem()
+    end
+    Slab.EndListBox()
+
     Slab.EndWindow()
 
     --update the entities
