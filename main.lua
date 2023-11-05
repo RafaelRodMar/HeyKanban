@@ -7,6 +7,9 @@ function love.load()
     love.window.setMode(appWidth, appHeight, {resizable=false, vsync=false})
 
     entities = {}
+    todoTable = {}
+    doingTable = {}
+    doneTable = {}
 
     --load font
     font = love.graphics.newFont("sansation.ttf",25)
@@ -31,6 +34,14 @@ function love.load()
     vMouse = {x=0, y=0}
 
     Slab.Initialize(args)
+
+    -- fill the tables with some values
+    for I = 1, 10, 1 do
+        table.insert(todoTable, "Item " .. I)
+        table.insert(doingTable, "Item " .. I)
+        table.insert(doneTable, "Item " .. I)
+    end
+    Selected1, Selected2, Selected3 = nil, nil, nil
 end
 
 function love.keypressed(key)
@@ -50,6 +61,12 @@ function love.mousepressed(x,y,button, istouch)
 	end
 end
 
+function love.mousereleased(x,y,button,istouch)
+    if button == 1 then
+        mouseClicked = false
+    end
+end
+
 function love.update(dt)
     Slab.Update(dt)
 
@@ -66,14 +83,13 @@ function love.update(dt)
     Slab.EndWindow()
 
     -- to do list
-    local Selected1 = nil
 
     Slab.BeginWindow('ListBoxWindow1', {AutoSizeWindow = false, AllowResize = false, X = 20, Y = 80, W = 220, H = 500})
 
     Slab.BeginListBox('ListBox1', {StretchW = true, StretchH = true})
-    for I = 1, 10, 1 do
-        Slab.BeginListBoxItem('ListBox1_Item_' .. I, {Selected1 = Selected1 == I})
-        Slab.Text("Item " .. I)
+    for I = 1, #todoTable do
+        Slab.BeginListBoxItem('ListBox1_Item_' .. I, {Selected = Selected1 == I})
+        Slab.Text(todoTable[I])
 
         if Slab.IsListBoxItemClicked() then
             Selected1 = I
@@ -81,19 +97,19 @@ function love.update(dt)
 
         Slab.EndListBoxItem()
     end
+
     Slab.EndListBox()
 
     Slab.EndWindow()
 
     -- doing list
-    local Selected2 = nil
 
     Slab.BeginWindow('ListBoxWindow2', {AutoSizeWindow = false, AllowResize = false, X = 260, Y = 80, W = 220, H = 500})
 
     Slab.BeginListBox('ListBox2', {StretchW = true, StretchH = true})
-    for I = 1, 10, 1 do
-        Slab.BeginListBoxItem('ListBox2_Item_' .. I, {Selected2 = Selected2 == I})
-        Slab.Text("Item " .. I)
+    for I = 1, #doingTable do
+        Slab.BeginListBoxItem('ListBox2_Item_' .. I, {Selected = Selected2 == I})
+        Slab.Text(doingTable[I])
 
         if Slab.IsListBoxItemClicked() then
             Selected2 = I
@@ -106,13 +122,13 @@ function love.update(dt)
     Slab.EndWindow()
 
     -- done list
-    local Selected3 = nil
+
     Slab.BeginWindow('ListBoxWindow3', {AutoSizeWindow = false, AllowResize = false, X = 500, Y = 80, W = 220, H = 500})
 
     Slab.BeginListBox('ListBox3', {StretchW = true, StretchH = true})
-    for I = 1, 10, 1 do
-        Slab.BeginListBoxItem('ListBox3_Item_' .. I, {Selected3 = Selected3 == I})
-        Slab.Text("Item " .. I)
+    for I = 1, #doneTable do
+        Slab.BeginListBoxItem('ListBox3_Item_' .. I, {Selected = Selected3 == I})
+        Slab.Text(doneTable[I])
 
         if Slab.IsListBoxItemClicked() then
             Selected3 = I
@@ -129,6 +145,10 @@ function love.update(dt)
         v:update(dt)
     end
     
+    if Selected1 == nil then Selected1 = 0 end
+    if Selected2 == nil then Selected2 = 0 end
+    if Selected3 == nil then Selected3 = 0 end
+    print(Selected1 .. "," .. Selected2 .. "," .. Selected3)
     mouseClicked = false
 end
 
