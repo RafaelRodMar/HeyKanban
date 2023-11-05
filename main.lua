@@ -32,6 +32,12 @@ function love.load()
     -- mouse
     mouseClicked = false
     vMouse = {x=0, y=0}
+    mouseDragging = false
+    dragElement = nil
+    dragOrigin = nil
+    dragDestiny = nil
+    mouseControlClicked = nil
+    mouseControlHovered = nil
 
     Slab.Initialize(args)
 
@@ -57,13 +63,43 @@ end
 
 function love.mousepressed(x,y,button, istouch)
 	if button == 1 then
+        mouseDragging = true
 		mouseClicked = true
 	end
 end
 
 function love.mousereleased(x,y,button,istouch)
-    if button == 1 then
-        mouseClicked = false
+    if button == 1 and mouseDragging == true then
+        if dragOrigin == dragDestiny then return end
+
+        -- get dragElement from dragOrigin list
+        -- remove dragElement from dragOrigin list
+        local elem = nil
+        if dragOrigin == 1 then
+            elem = table.remove(todoTable,dragElement)
+        end
+        if dragOrigin == 2 then
+            elem = table.remove(doingTable,dragElement)
+        end
+        if dragOrigin == 3 then
+            elem = table.remove(doneTable,dragElement)
+        end
+        -- add dragElement to dragDestiny list
+        if dragDestiny == 1 then
+            table.insert(todoTable, elem)
+        end
+        if dragDestiny == 2 then
+            table.insert(doingTable, elem)
+        end
+        if dragDestiny == 3 then
+            table.insert(doneTable, elem)
+        end
+
+        -- reset
+        mouseDragging = false
+        dragOrigin = nil
+        dragDestiny = nil
+        dragElement = nil
     end
 end
 
@@ -99,6 +135,15 @@ function love.update(dt)
     end
 
     Slab.EndListBox()
+    if Slab.IsControlClicked() then 
+        mouseControlClicked = 1
+        dragOrigin = 1
+        dragElement = Selected1
+    end
+    if Slab.IsControlHovered() then 
+        mouseControlHovered = 1 
+        dragDestiny = 1
+    end
 
     Slab.EndWindow()
 
@@ -118,6 +163,15 @@ function love.update(dt)
         Slab.EndListBoxItem()
     end
     Slab.EndListBox()
+    if Slab.IsControlClicked() then 
+        mouseControlClicked = 2 
+        dragOrigin = 2
+        dragElement = Selected2
+    end
+    if Slab.IsControlHovered() then 
+        mouseControlHovered = 2 
+        dragDestiny = 2
+    end
 
     Slab.EndWindow()
 
@@ -137,18 +191,25 @@ function love.update(dt)
         Slab.EndListBoxItem()
     end
     Slab.EndListBox()
+    if Slab.IsControlClicked() then
+        mouseControlClicked = 3
+        dragOrigin = 3
+        dragElement = Selected3
+    end
+    if Slab.IsControlHovered() then 
+        mouseControlHovered = 3 
+        dragDestiny = 3
+    end
 
     Slab.EndWindow()
 
+    if Slab.IsVoidHovered() then mouseControlHovered = nil end
+
     --update the entities
-    for i,v in ipairs(entities) do
-        v:update(dt)
-    end
-    
-    if Selected1 == nil then Selected1 = 0 end
-    if Selected2 == nil then Selected2 = 0 end
-    if Selected3 == nil then Selected3 = 0 end
-    print(Selected1 .. "," .. Selected2 .. "," .. Selected3)
+    -- for i,v in ipairs(entities) do
+    --     v:update(dt)
+    -- end
+
     mouseClicked = false
 end
 
@@ -156,11 +217,25 @@ function love.draw()
     love.graphics.setBackgroundColor(0,0,0)
 
     -- draw the objects
-    for i,v in ipairs(entities) do
-        v:draw()
-    end
+    -- for i,v in ipairs(entities) do
+    --     v:draw()
+    -- end
 
     -- Draw Debug Info
+    love.graphics.print("Selected", 730, 0)
+    if Selected1 == nil then Selected1 = 0 end
+    if Selected2 == nil then Selected2 = 0 end
+    if Selected3 == nil then Selected3 = 0 end
+    love.graphics.print(Selected1 .. "," .. Selected2 .. "," .. Selected3, 730, 30)
+    love.graphics.print("Dragging", 730, 60)
+    love.graphics.print(tostring(mouseDragging), 730, 90)
+    if mouseControlClicked ~= nil then
+        love.graphics.print("Clicked " .. mouseControlClicked, 730, 120)
+    end
+    if mouseControlHovered ~= nil then
+        love.graphics.print("Hover " .. mouseControlHovered, 730, 150)
+    end
+
     --draw UI
     Slab.Draw()
 end
