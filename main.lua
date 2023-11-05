@@ -124,7 +124,7 @@ function love.update(dt)
 
     Slab.BeginListBox('ListBox1', {StretchW = true, StretchH = true})
     for I = 1, #todoTable do
-        Slab.BeginListBoxItem('ListBox1_Item_' .. I, {Selected = Selected1 == I})
+        Slab.BeginListBoxItem('ListBox1_Item_' .. I)
         Slab.Text(todoTable[I])
 
         if Slab.IsListBoxItemClicked() then
@@ -153,7 +153,7 @@ function love.update(dt)
 
     Slab.BeginListBox('ListBox2', {StretchW = true, StretchH = true})
     for I = 1, #doingTable do
-        Slab.BeginListBoxItem('ListBox2_Item_' .. I, {Selected = Selected2 == I})
+        Slab.BeginListBoxItem('ListBox2_Item_' .. I)
         Slab.Text(doingTable[I])
 
         if Slab.IsListBoxItemClicked() then
@@ -181,7 +181,7 @@ function love.update(dt)
 
     Slab.BeginListBox('ListBox3', {StretchW = true, StretchH = true})
     for I = 1, #doneTable do
-        Slab.BeginListBoxItem('ListBox3_Item_' .. I, {Selected = Selected3 == I})
+        Slab.BeginListBoxItem('ListBox3_Item_' .. I)
         Slab.Text(doneTable[I])
 
         if Slab.IsListBoxItemClicked() then
