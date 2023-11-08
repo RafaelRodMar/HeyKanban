@@ -7,9 +7,6 @@ function love.load()
     love.window.setMode(appWidth, appHeight, {resizable=false, vsync=false})
 
     entities = {}
-    todoTable = {}
-    doingTable = {}
-    doneTable = {}
 
     --load font
     font = love.graphics.newFont("sansation.ttf",25)
@@ -47,12 +44,14 @@ function love.load()
     mouseControlHovered = nil
 
     -- fill the tables with some values
-    listBox1:addCard("hello world")
-    listBox1:addCard("second card")
-    for I = 1, 10, 1 do
-        table.insert(todoTable, "Item " .. I)
-        table.insert(doingTable, "Item " .. I)
-        table.insert(doneTable, "Item " .. I)
+    for i=0, 10 do
+        listBox1:addCard("card " .. i)
+    end
+    for i=0, 4 do
+        listBox2:addCard("card " .. i)
+    end
+    for i=0, 10 do
+        listBox3:addCard("card " .. i)
     end
     Selected1, Selected2, Selected3 = nil, nil, nil
 end
@@ -81,26 +80,26 @@ function love.mousereleased(x,y,button,istouch)
 
         -- get dragElement from dragOrigin list
         -- remove dragElement from dragOrigin list
-        local elem = nil
-        if dragOrigin == 1 then
-            elem = table.remove(todoTable,dragElement)
-        end
-        if dragOrigin == 2 then
-            elem = table.remove(doingTable,dragElement)
-        end
-        if dragOrigin == 3 then
-            elem = table.remove(doneTable,dragElement)
-        end
-        -- add dragElement to dragDestiny list
-        if dragDestiny == 1 then
-            table.insert(todoTable, elem)
-        end
-        if dragDestiny == 2 then
-            table.insert(doingTable, elem)
-        end
-        if dragDestiny == 3 then
-            table.insert(doneTable, elem)
-        end
+        -- local elem = nil
+        -- if dragOrigin == 1 then
+        --     elem = table.remove(todoTable,dragElement)
+        -- end
+        -- if dragOrigin == 2 then
+        --     elem = table.remove(doingTable,dragElement)
+        -- end
+        -- if dragOrigin == 3 then
+        --     elem = table.remove(doneTable,dragElement)
+        -- end
+        -- -- add dragElement to dragDestiny list
+        -- if dragDestiny == 1 then
+        --     table.insert(todoTable, elem)
+        -- end
+        -- if dragDestiny == 2 then
+        --     table.insert(doingTable, elem)
+        -- end
+        -- if dragDestiny == 3 then
+        --     table.insert(doneTable, elem)
+        -- end
 
         -- reset
         mouseDragging = false

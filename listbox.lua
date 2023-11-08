@@ -31,6 +31,7 @@ function listbox:draw()
     local x = self.posx
     local y = self.posy + 25
     for i=1, #self.cards do
+        if y + 50 > self.posy + self.height then break end
         love.graphics.setColor(1,1,1)
         love.graphics.rectangle("fill", x, y, 220, 50)
         love.graphics.setColor(0,0,0)
