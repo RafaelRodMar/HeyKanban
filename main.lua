@@ -1,4 +1,4 @@
-local Slab = require 'libraries/Slab'
+require("listbox")
     
 function love.load()
     --variables
@@ -29,6 +29,13 @@ function love.load()
     -- remove objects
     --table.remove(entities,i)
 
+    listBox1 = listbox:new("To do", 20, 20, 220, 560)
+    table.insert(entities, listBox1)
+    listBox2 = listbox:new("Doing", 260, 20, 220, 560)
+    table.insert(entities, listBox2)
+    listBox3 = listbox:new("Done", 500, 20, 220, 560)
+    table.insert(entities, listBox3)
+
     -- mouse
     mouseClicked = false
     vMouse = {x=0, y=0}
@@ -39,9 +46,9 @@ function love.load()
     mouseControlClicked = nil
     mouseControlHovered = nil
 
-    Slab.Initialize(args)
-
     -- fill the tables with some values
+    listBox1:addCard("hello world")
+    listBox1:addCard("second card")
     for I = 1, 10, 1 do
         table.insert(todoTable, "Item " .. I)
         table.insert(doingTable, "Item " .. I)
@@ -104,122 +111,32 @@ function love.mousereleased(x,y,button,istouch)
 end
 
 function love.update(dt)
-    Slab.Update(dt)
+    -- button 1 20, 20, 220, 50
+    -- button 2 260, 20, 220, 50
+    -- button 3 500, 20, 220, 20
 
-    Slab.BeginWindow('button1Window', {AutoSizeWindow = false, AllowResize = false, X = 20, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
-    Slab.Button("To Do", {W = 215, H = 45 })
-    Slab.EndWindow()
+    -- to do list 20,80, 220, 500
 
-    Slab.BeginWindow('button2Window', {AutoSizeWindow = false, AllowResize = false, X = 260, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
-    Slab.Button("Doing", {W = 215, H = 45 })
-    Slab.EndWindow()
+    -- doing list 260, 80, 220, 500
 
-    Slab.BeginWindow('button3Window', {AutoSizeWindow = false, AllowResize = false, X = 500, Y = 20, W = 220, H = 50, BgColor = {1,0,0}})
-    Slab.Button("Done", {W = 215, H = 45 })
-    Slab.EndWindow()
-
-    -- to do list
-
-    Slab.BeginWindow('ListBoxWindow1', {AutoSizeWindow = false, AllowResize = false, X = 20, Y = 80, W = 220, H = 500})
-
-    Slab.BeginListBox('ListBox1', {StretchW = true, StretchH = true})
-    for I = 1, #todoTable do
-        Slab.BeginListBoxItem('ListBox1_Item_' .. I)
-        Slab.Text(todoTable[I])
-
-        if Slab.IsListBoxItemClicked() then
-            Selected1 = I
-        end
-
-        Slab.EndListBoxItem()
-    end
-
-    Slab.EndListBox()
-    if Slab.IsControlClicked() then 
-        mouseControlClicked = 1
-        dragOrigin = 1
-        dragElement = Selected1
-    end
-    if Slab.IsControlHovered() then 
-        mouseControlHovered = 1 
-        dragDestiny = 1
-    end
-
-    Slab.EndWindow()
-
-    -- doing list
-
-    Slab.BeginWindow('ListBoxWindow2', {AutoSizeWindow = false, AllowResize = false, X = 260, Y = 80, W = 220, H = 500})
-
-    Slab.BeginListBox('ListBox2', {StretchW = true, StretchH = true})
-    for I = 1, #doingTable do
-        Slab.BeginListBoxItem('ListBox2_Item_' .. I)
-        Slab.Text(doingTable[I])
-
-        if Slab.IsListBoxItemClicked() then
-            Selected2 = I
-        end
-
-        Slab.EndListBoxItem()
-    end
-    Slab.EndListBox()
-    if Slab.IsControlClicked() then 
-        mouseControlClicked = 2 
-        dragOrigin = 2
-        dragElement = Selected2
-    end
-    if Slab.IsControlHovered() then 
-        mouseControlHovered = 2 
-        dragDestiny = 2
-    end
-
-    Slab.EndWindow()
-
-    -- done list
-
-    Slab.BeginWindow('ListBoxWindow3', {AutoSizeWindow = false, AllowResize = false, X = 500, Y = 80, W = 220, H = 500})
-
-    Slab.BeginListBox('ListBox3', {StretchW = true, StretchH = true})
-    for I = 1, #doneTable do
-        Slab.BeginListBoxItem('ListBox3_Item_' .. I)
-        Slab.Text(doneTable[I])
-
-        if Slab.IsListBoxItemClicked() then
-            Selected3 = I
-        end
-
-        Slab.EndListBoxItem()
-    end
-    Slab.EndListBox()
-    if Slab.IsControlClicked() then
-        mouseControlClicked = 3
-        dragOrigin = 3
-        dragElement = Selected3
-    end
-    if Slab.IsControlHovered() then 
-        mouseControlHovered = 3 
-        dragDestiny = 3
-    end
-
-    Slab.EndWindow()
-
-    if Slab.IsVoidHovered() then mouseControlHovered = nil end
+    -- done list 500, 80, 220, 500
 
     --update the entities
-    -- for i,v in ipairs(entities) do
-    --     v:update(dt)
-    -- end
+    for i,v in ipairs(entities) do
+        v:update(dt)
+    end
 
     mouseClicked = false
 end
 
 function love.draw()
     love.graphics.setBackgroundColor(0,0,0)
+    love.graphics.setColor(1,1,1)
 
-    -- draw the objects
-    -- for i,v in ipairs(entities) do
-    --     v:draw()
-    -- end
+    -- draw the entities
+    for i,v in ipairs(entities) do
+        v:draw()
+    end
 
     -- Draw Debug Info
     love.graphics.print("Selected", 730, 0)
@@ -237,5 +154,4 @@ function love.draw()
     end
 
     --draw UI
-    Slab.Draw()
 end
