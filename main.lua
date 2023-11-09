@@ -9,7 +9,7 @@ function love.load()
     entities = {}
 
     --load font
-    font = love.graphics.newFont("sansation.ttf",25)
+    font = love.graphics.newFont("sansation.ttf",20)
     love.graphics.setFont(font)
 
 	-- Sprite that holds all imagery
@@ -65,6 +65,9 @@ end
 function love.mousemoved( x, y, dx, dy, istouch )
     vMouse.x = x
     vMouse.y = y
+    for i,v in ipairs(entities) do
+        v:mousemoved(vMouse.x, vMouse.y) -- let the controls check if they are hovered
+    end
 end
 
 function love.mousepressed(x,y,button, istouch)
@@ -110,27 +113,20 @@ function love.mousereleased(x,y,button,istouch)
 end
 
 function love.update(dt)
-    -- button 1 20, 20, 220, 50
-    -- button 2 260, 20, 220, 50
-    -- button 3 500, 20, 220, 20
-
-    -- to do list 20,80, 220, 500
-
-    -- doing list 260, 80, 220, 500
-
-    -- done list 500, 80, 220, 500
-
+    mouseControlHovered = nil
     --update the entities
     for i,v in ipairs(entities) do
         v:update(dt)
+        -- if control is hovered
+        if v.hovered then mouseControlHovered = i end 
     end
 
     mouseClicked = false
 end
 
 function love.draw()
-    love.graphics.setBackgroundColor(0,0,0)
-    love.graphics.setColor(1,1,1)
+    love.graphics.setBackgroundColor(0,0,0) -- black
+    love.graphics.setColor(1,1,1) -- white
 
     -- draw the entities
     for i,v in ipairs(entities) do
