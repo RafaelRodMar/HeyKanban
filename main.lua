@@ -2,7 +2,7 @@ require("listbox")
     
 function love.load()
     --variables
-    appWidth = 800
+    appWidth = 900
     appHeight = 600
     love.window.setMode(appWidth, appHeight, {resizable=false, vsync=false})
 
@@ -26,11 +26,11 @@ function love.load()
     -- remove objects
     --table.remove(entities,i)
 
-    listBox1 = listbox:new("To do", 20, 20, 220, 560)
+    listBox1 = listbox:new("To do", 20, 20, 240, 560)
     table.insert(entities, listBox1)
-    listBox2 = listbox:new("Doing", 260, 20, 220, 560)
+    listBox2 = listbox:new("Doing", 280, 20, 240, 560)
     table.insert(entities, listBox2)
-    listBox3 = listbox:new("Done", 500, 20, 220, 560)
+    listBox3 = listbox:new("Done", 540, 20, 240, 560)
     table.insert(entities, listBox3)
 
     -- mouse
@@ -44,16 +44,16 @@ function love.load()
     mouseControlHovered = nil
 
     -- fill the tables with some values
-    for i=0, 10 do
+    for i=1, 10 do
         listBox1:addCard("card " .. i)
     end
-    for i=0, 4 do
+    for i=1, 4 do
         listBox2:addCard("card " .. i)
     end
-    for i=0, 10 do
+    for i=1, 10 do
         listBox3:addCard("card " .. i)
     end
-    Selected1, Selected2, Selected3 = nil, nil, nil
+    selected = {0,0,0}
 end
 
 function love.keypressed(key)
@@ -74,6 +74,11 @@ function love.mousepressed(x,y,button, istouch)
 	if button == 1 then
         mouseDragging = true
 		mouseClicked = true
+
+        -- send to controls
+        for i,v in ipairs(entities) do
+            v:mousepressed(x,y)
+        end
 	end
 end
 
@@ -118,7 +123,8 @@ function love.update(dt)
     for i,v in ipairs(entities) do
         v:update(dt)
         -- if control is hovered
-        if v.hovered then mouseControlHovered = i end 
+        if v.hovered then mouseControlHovered = i end
+        selected[i] = v.selected
     end
 
     mouseClicked = false
@@ -134,18 +140,18 @@ function love.draw()
     end
 
     -- Draw Debug Info
-    love.graphics.print("Selected", 730, 0)
-    if Selected1 == nil then Selected1 = 0 end
-    if Selected2 == nil then Selected2 = 0 end
-    if Selected3 == nil then Selected3 = 0 end
-    love.graphics.print(Selected1 .. "," .. Selected2 .. "," .. Selected3, 730, 30)
-    love.graphics.print("Dragging", 730, 60)
-    love.graphics.print(tostring(mouseDragging), 730, 90)
+    love.graphics.print("Selected", 800, 0)
+    if selected[1] == nil then selected[1] = 0 end
+    if selected[2] == nil then selected[2] = 0 end
+    if selected[3] == nil then selected[3] = 0 end
+    love.graphics.print(selected[1] .. "," .. selected[2] .. "," .. selected[3], 800, 30)
+    love.graphics.print("Dragging", 800, 60)
+    love.graphics.print(tostring(mouseDragging), 800, 90)
     if mouseControlClicked ~= nil then
-        love.graphics.print("Clicked " .. mouseControlClicked, 730, 120)
+        love.graphics.print("Clicked " .. mouseControlClicked, 800, 120)
     end
     if mouseControlHovered ~= nil then
-        love.graphics.print("Hover " .. mouseControlHovered, 730, 150)
+        love.graphics.print("Hover " .. mouseControlHovered, 800, 150)
     end
 
     --draw UI
