@@ -77,8 +77,7 @@ function updateListBox()
         table.insert(visibleItems, items[i])
     end
 end
-
+-- Update the thumb height of the ScrollBar
 function updateScrollBar()
-    -- Update the thumb height of the ScrollBar
     scrollBar.thumbHeight = listBox.height / #items
 end

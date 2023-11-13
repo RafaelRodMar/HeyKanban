@@ -50,7 +50,7 @@ function love.load()
     for i=1, 4 do
         listBox2:addCard("card " .. i)
     end
-    for i=1, 10 do
+    for i=1, 20 do
         listBox3:addCard("card " .. i)
     end
     selected = {0,0,0}
@@ -124,7 +124,7 @@ function love.update(dt)
         v:update(dt)
         -- if control is hovered
         if v.hovered then mouseControlHovered = i end
-        selected[i] = v.selected
+        selected[i] = v.selectedItem
     end
 
     mouseClicked = false
