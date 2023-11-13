@@ -76,7 +76,8 @@ end
 
 -- Update the thumb height of the ScrollBar
 function listbox:updateScrollBar()
-    self.scrollBar.thumbHeight = self.height / #self.cards
+    --self.scrollBar.thumbHeight = self.height / #self.cards
+    self.scrollBar.thumbHeight = ((self.height - 25) / #self.cards) + 5 -- 5 is the separation between cards
 end
 
 function listbox:draw()
