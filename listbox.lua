@@ -18,6 +18,7 @@ function listbox:new(name, x, y, w, h)
     entity.numVisibleItems = 9
     entity.selectedItem = 1
     entity.visibleItems = {}
+    entity.startItem = 1
 
     -- scrollbar
     -- Initialize ScrollBar
@@ -68,8 +69,8 @@ end
 function listbox:updateListBox()
     -- Update the visible items based on the selected item
     self.visibleItems = {}
-    local startItem = math.max(1, self.selectedItem - math.floor(self.numVisibleItems / 2))
-    for i = startItem, math.min(#self.cards, startItem + self.numVisibleItems - 1) do
+    self.startItem = math.max(1, self.selectedItem - math.floor(self.numVisibleItems / 2))
+    for i = self.startItem, math.min(#self.cards, self.startItem + self.numVisibleItems - 1) do
         table.insert(self.visibleItems, self.cards[i])
     end
 end
