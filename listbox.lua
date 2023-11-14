@@ -50,26 +50,32 @@ end
 function listbox:mousepressed(x,y)
     -- check if hits a card or the scrollbar controls.
     if x > self.posx + self.width - 20 and x < self.posx + self.width then
+        if #self.cards <= self.numVisibleItems then return end
         -- it hits the scroll bar.
-        self.selectedItem = math.floor((y - self.scrollBar.y) / self.scrollBar.thumbHeight)
-        self.selectedItem = math.min(math.max(self.selectedItem, 1), #self.cards)
+        --self.selectedItem = math.floor((y - self.scrollBar.y) / self.scrollBar.thumbHeight)
+        --self.selectedItem = self.selectedItem + self.startItem - 1
+        --self.selectedItem = math.min(math.max(self.selectedItem, 1), #self.cards)
+        self.startItem = math.floor((y - self.scrollBar.y) / self.scrollBar.thumbHeight)
+        self.startItem = math.min(math.max(self.startItem, 1), #self.cards)
+        self.selectedItem = self.startItem
         self:updateListBox()
         self:updateScrollBar()    
     else
-        if x > self.posx and x < self.posx + self.width - 20 and y > self.posy + 25 and y < self.posy + self.height then
+        if x > self.posx and x < self.posx + self.width - 20 and y > self.posy + 25 and y < self.posy + 25 + self.numVisibleItems * (50 + 5) then
             -- calculate the selected item based on the click position
             self.selectedItem = math.floor((y - self.posy + 25) / 55 ) -- 55 is 50 height of card + 5 height of separation
+            self.selectedItem = self.selectedItem + self.startItem - 1
             self.selectedItem = math.min(math.max(self.selectedItem, 1), #self.cards)
+            self:updateListBox()
+            self:updateScrollBar()    
         end
-        self:updateListBox()
-        self:updateScrollBar()    
     end
 end
 
 function listbox:updateListBox()
     -- Update the visible items based on the selected item
     self.visibleItems = {}
-    self.startItem = math.max(1, self.selectedItem - math.floor(self.numVisibleItems / 2))
+    --self.startItem = math.max(1, self.selectedItem - math.floor(self.numVisibleItems / 2))
     for i = self.startItem, math.min(#self.cards, self.startItem + self.numVisibleItems - 1) do
         table.insert(self.visibleItems, self.cards[i])
     end
@@ -77,7 +83,6 @@ end
 
 -- Update the thumb height of the ScrollBar
 function listbox:updateScrollBar()
-    --self.scrollBar.thumbHeight = self.height / #self.cards
     self.scrollBar.thumbHeight = ((self.height - 25) / #self.cards) + 5 -- 5 is the separation between cards
 end
 
