@@ -26,7 +26,7 @@ function listbox:new(name, x, y, w, h)
     entity.scrollBar.y = entity.posy + 25
     entity.scrollBar.width = 20
     entity.scrollBar.height = entity.height - 25
-    entity.scrollBar.thumbHeight = ((entity.height - 25) / #entity.cards) + 5 -- 5 is the separation between cards
+    entity.scrollBar.thumbHeight = ((entity.height - 25) / #entity.cards)
 
     return entity
 end
@@ -72,6 +72,20 @@ function listbox:mousepressed(x,y)
     end
 end
 
+function listbox:wheelmoved(x,y)
+    if y > 0 then
+        --self.selectedItem = math.min(math.max(self.selectedItem - 1, 1), #self.cards)
+        self.startItem = math.min(math.max(self.startItem - 1, 1), #self.cards)
+    elseif y < 0 then
+        --self.selectedItem = math.min(self.selectedItem + 1, #self.cards)
+        self.startItem = math.min(self.startItem + 1, #self.cards)
+    end
+
+    self.selectedItem = self.startItem
+    self:updateListBox()
+    self:updateScrollBar()
+end
+
 function listbox:updateListBox()
     -- Update the visible items based on the selected item
     self.visibleItems = {}
@@ -83,7 +97,7 @@ end
 
 -- Update the thumb height of the ScrollBar
 function listbox:updateScrollBar()
-    self.scrollBar.thumbHeight = ((self.height - 25) / #self.cards) + 5 -- 5 is the separation between cards
+    self.scrollBar.thumbHeight = ((self.height - 25) / #self.cards)
 end
 
 function listbox:draw()

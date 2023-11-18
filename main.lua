@@ -117,6 +117,15 @@ function love.mousereleased(x,y,button,istouch)
     end
 end
 
+function love.wheelmoved(x, y)
+    -- send only to the hovered control
+    for i,v in ipairs(entities) do
+        if i == mouseControlHovered then
+            v:wheelmoved(x,y)
+        end
+    end
+end
+
 function love.update(dt)
     mouseControlHovered = nil
     --update the entities
